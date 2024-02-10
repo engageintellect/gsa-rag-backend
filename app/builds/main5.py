@@ -45,7 +45,7 @@ bedrock_runtime = initialize_bedrock_client()
 
 # List of document paths
 
-document_path = "/home/ubuntu/gsa-rag/docs/"
+document_path = "/home/ubuntu/gsa-rag-backend/docs/"
 document_names = [
     "0VV35P.3RLG4G_47QTCA20D00B2_INDUCTIVEHEALTH123020.html",
     "0WG872.3S6L5T_47QTCA20D006Y_TMETRICSIFSSPRICELISTREV.html",
@@ -130,7 +130,7 @@ logging_config = {
         "file": {
             "class": "logging.FileHandler",
             "formatter": "default",
-            "filename": "/home/ubuntu/gsa-rag/logs/uvicorn.log",
+            "filename": "/home/ubuntu/gsa-rag-backend/logs/uvicorn.log",
         },
         "stream": {
             "class": "logging.StreamHandler",

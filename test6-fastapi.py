@@ -47,9 +47,9 @@ async def generate_answer(question: Question):
 
     # List of document paths
     document_paths = [
-        "/home/ubuntu/gsa-rag/docs/0VV35P.3RLG4G_47QTCA20D00B2_INDUCTIVEHEALTH123020.html",
-        "/home/ubuntu/gsa-rag/docs/0WG872.3S6L5T_47QTCA20D006Y_TMETRICSIFSSPRICELISTREV.html",
-        "/home/ubuntu/gsa-rag/docs/0WTKWJ.3SJXV8_47QTCA20D00EY_47QTCA20D00EY.html"
+        "/home/ubuntu/gsa-rag-backend/docs/0VV35P.3RLG4G_47QTCA20D00B2_INDUCTIVEHEALTH123020.html",
+        "/home/ubuntu/gsa-rag-backend/docs/0WG872.3S6L5T_47QTCA20D006Y_TMETRICSIFSSPRICELISTREV.html",
+        "/home/ubuntu/gsa-rag-backend/docs/0WTKWJ.3SJXV8_47QTCA20D00EY_47QTCA20D00EY.html"
     ]
 
     # Load documents and concatenate their contents

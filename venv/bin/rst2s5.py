@@ -1,4 +1,4 @@
-#!/home/ubuntu/gsa-rag/venv/bin/python3
+#!/home/ubuntu/gsa-rag-backend/venv/bin/python3
 
 # $Id: rst2s5.py 4564 2006-05-21 20:44:42Z wiemann $
 # Author: Chris Liechti <cliechti@gmx.net>

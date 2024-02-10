@@ -1,4 +1,4 @@
-#!/home/ubuntu/gsa-rag/venv/bin/python3
+#!/home/ubuntu/gsa-rag-backend/venv/bin/python3
 
 # Author:
 # Contact: grubert@users.sf.net
