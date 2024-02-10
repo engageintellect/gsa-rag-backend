@@ -80,53 +80,35 @@ async def read_root():
     uvicorn_logger.info("Hello endpoint was accessed.")
     return {"message": "Hello, from Resonant Logic!"}
 
-@app.post("/generate_answer/", response_class=HTMLResponse)
+@app.post("/generate_answer/")
 async def generate_answer(question: Question):
-    user_question = question.user_question
-    question_template = """
-    You are a helpful assistant. Read the document inside <doc> tags that contains proposals for products and services from 4 vendors.
-    <doc>
-    {doc_text}
-    </doc>
-    """
-
-    question_template = question_template + user_question + "Think step by Step"
-    prompt = PromptTemplate(template=question_template, input_variables=[""])
-
-
-    # Initialize LLM chain and run
-    bedrock_llm = Bedrock(
-        model_id=model_id,
-        client=bedrock_runtime,
-        model_kwargs={
-            'max_tokens_to_sample': 4096,
-            'temperature': 1.0,
-            'top_k': 250,
-            'top_p': 0.999
-        }
-    )
-
-    llm_chain = LLMChain(prompt=prompt, llm=bedrock_llm)
-    output = llm_chain.run({"doc_text": fulltext})
-
-    # Format the output as an HTML list
-    output_lines = output.split('\n')
-    html_output = '<html><body><ul>'
-    for line in output_lines:
-        if line.strip():
-            html_output += f'<li>{line}</li>'
-    html_output += '</ul></body></html>'
-
-    return html_output
-
-
-
-
-
     try:
         uvicorn_logger.info("Received question: %s", question.user_question)
+        user_question = question.user_question
+        question_template = """
+        You are a helpful assistant. Read the document inside <doc> tags that contains proposals for products and services from 4 vendors.
+        <doc>
+        {doc_text}
+        </doc>
+        """
 
-        # Rest of your code...
+        question_template = question_template + user_question + "Think step by Step"
+        prompt = PromptTemplate(template=question_template, input_variables=[""])
+
+        # Initialize LLM chain and run
+        bedrock_llm = Bedrock(
+            model_id=model_id,
+            client=bedrock_runtime,
+            model_kwargs={
+                'max_tokens_to_sample': 4096,
+                'temperature': 1.0,
+                'top_k': 250,
+                'top_p': 0.999
+            }
+        )
+
+        llm_chain = LLMChain(prompt=prompt, llm=bedrock_llm)
+        output = llm_chain.run({"doc_text": fulltext})
 
         return output
     except Exception as e:
