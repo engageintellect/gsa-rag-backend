@@ -76,13 +76,13 @@ model_id = 'anthropic.claude-v2:1'
 # Hello World endpoint
 @app.get("/hello")
 async def read_root():
-    uvicorn_logger.info("Hello endpoint was accessed.")
+    # uvicorn_logger.info("Hello endpoint was accessed.")
     return {"message": "Hello, from Resonant Logic!"}
 
 @app.post("/generate_answer/")
 async def generate_answer(question: Question):
     try:
-        uvicorn_logger.info("Received question: %s", question.user_question)
+        # uvicorn_logger.info("Received question: %s", question.user_question)
         user_question = question.user_question
         question_template = """
         You are a helpful assistant. Read the document inside <doc> tags that contains proposals for products and services from 4 vendors.
@@ -111,7 +111,7 @@ async def generate_answer(question: Question):
 
         return output
     except Exception as e:
-        uvicorn_logger.exception("An error occurred while generating answer: %s", str(e))
+        # uvicorn_logger.exception("An error occurred while generating answer: %s", str(e))
         return {"error": "An error occurred"}
 
 # Configure UVicorn logging
