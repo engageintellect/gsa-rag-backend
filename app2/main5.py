@@ -85,6 +85,32 @@ async def generate_answer(question: Question):
         uvicorn_logger.info("Received question: %s", question.user_question)
 
         # Rest of your code...
+        # Q&A prompt template
+        user_question = question.user_question
+        question_template = """
+        You are a helpful assistant. Read the document inside <doc> tags that contains proposals for products and services from 4 vendors.
+        <doc>
+        {doc_text}
+        </doc>
+        """
+
+        question_template = question_template + user_question + "Think step by Step"
+        prompt = PromptTemplate(template=question_template, input_variables=[""])
+
+        # Initialize LLM chain and run
+        bedrock_llm = Bedrock(
+            model_id=model_id,
+            client=bedrock_runtime,
+            model_kwargs={
+                'max_tokens_to_sample': 4096,
+                'temperature': 1.0,
+                'top_k': 250,
+                'top_p': 0.999
+            }
+        )
+
+        llm_chain = LLMChain(prompt=prompt, llm=bedrock_llm)
+        output = llm_chain.run({"doc_text": fulltext})
 
         return output
     except Exception as e:
