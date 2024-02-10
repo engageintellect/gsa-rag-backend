@@ -76,7 +76,7 @@ model_id = 'anthropic.claude-v2:1'
 # Hello World endpoint
 @app.get("/hello")
 async def read_root():
-    # uvicorn_logger.info("Hello endpoint was accessed.")
+    uvicorn_logger.info("Hello endpoint was accessed.")
     return {"message": "Hello, from Resonant Logic!"}
 
 @app.post("/generate_answer/")

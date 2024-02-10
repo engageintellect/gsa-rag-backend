@@ -57,9 +57,9 @@ document_paths = []
 for document_name in document_names:
     document_paths.append(document_path + document_name)
 
-print(document_paths)
-
-
+print("DOCS:")
+for x in document_paths:
+    print(x)
 
 fulltext = ""
 for path in document_paths:
@@ -83,9 +83,6 @@ async def read_root():
 async def generate_answer(question: Question):
     try:
         uvicorn_logger.info("Received question: %s", question.user_question)
-
-        # Rest of your code...
-        # Q&A prompt template
         user_question = question.user_question
         question_template = """
         You are a helpful assistant. Read the document inside <doc> tags that contains proposals for products and services from 4 vendors.
