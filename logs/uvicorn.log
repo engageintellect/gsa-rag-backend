@@ -1,0 +1,5 @@
+2024-02-14 01:16:41,136 - uvicorn.error - INFO - Started server process [18388]
+2024-02-14 01:16:41,136 - uvicorn.error - INFO - Waiting for application startup.
+2024-02-14 01:16:41,136 - uvicorn.error - INFO - Application startup complete.
+2024-02-14 01:16:41,137 - uvicorn.error - INFO - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2024-02-14 01:17:09,311 - uvicorn.access - INFO - 127.0.0.1:55536 - "GET /hello HTTP/1.1" 200
