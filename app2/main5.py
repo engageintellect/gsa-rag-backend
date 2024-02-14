@@ -44,13 +44,23 @@ def initialize_bedrock_client():
 bedrock_runtime = initialize_bedrock_client()
 
 # List of document paths
-document_paths = [
-    "/home/ubuntu/gsa-rag/docs/0VV35P.3RLG4G_47QTCA20D00B2_INDUCTIVEHEALTH123020.html",
 
-    "/home/ubuntu/gsa-rag/docs/0WG872.3S6L5T_47QTCA20D006Y_TMETRICSIFSSPRICELISTREV.html",    "/home/ubuntu/gsa-rag/docs/0WTKWJ.3SJXV8_47QTCA20D00EY_47QTCA20D00EY.html"
+document_path = "/home/ubuntu/gsa-rag/docs/"
+document_names = [
+    "0VV35P.3RLG4G_47QTCA20D00B2_INDUCTIVEHEALTH123020.html",
+    "0WG872.3S6L5T_47QTCA20D006Y_TMETRICSIFSSPRICELISTREV.html",
+    "0WTKWJ.3SJXV8_47QTCA20D00EY_47QTCA20D00EY.html",
+    "0VVTSA.3RM6R1_GS-35F-148DA_GSAPRECISEDIGITALGS35F148DAIFSS6002021REV.html",
 ]
 
-# Load documents and concatenate their contents
+document_paths = []
+for document_name in document_names:
+    document_paths.append(document_path + document_name)
+
+print(document_paths)
+
+
+
 fulltext = ""
 for path in document_paths:
     loader = UnstructuredHTMLLoader(path)
@@ -95,15 +105,20 @@ logging_config = {
             "class": "logging.FileHandler",
             "formatter": "default",
             "filename": "/home/ubuntu/gsa-rag/logs/uvicorn.log",
+        },
+        "stream": {
+            "class": "logging.StreamHandler",
+            "formatter": "default"
         }
     },
     "loggers": {
         "uvicorn": {
-            "handlers": ["file"],
+            "handlers": ["file", "stream"],  # Add the stream handler here
             "level": "INFO",
         }
     }
 }
+
 
 # Run the FastAPI app using uvicorn when the script is executed directly
 if __name__ == "__main__":
