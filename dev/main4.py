@@ -109,7 +109,6 @@ bedrock_embeddings = BedrockEmbeddings(client=bedrock_runtime)
 # chain = chain_future.result()
 
 # Initialize Pinecone for document search
-# Initialize Pinecone for document search
 doc_texts = [t.page_content for t in docs]
 batch_size = 100  # Adjust batch size as needed
 num_batches = (len(doc_texts) + batch_size - 1) // batch_size
@@ -124,8 +123,13 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
 
     chain_future = executor.submit(load_qa_chain, llm, chain_type="stuff")
 
-docsearch = PineconeLang.merge(*docsearch_futures)
+# Combine results of document search futures
+docsearch = PineconeLang(docsearch_futures[0].data, index_name=index_name)
+for i in range(1, len(docsearch_futures)):
+    docsearch.add(docsearch_futures[i].data)
+
 chain = chain_future.result()
+
 
 
 # Example query
