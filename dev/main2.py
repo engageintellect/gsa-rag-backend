@@ -33,8 +33,6 @@ def load_documents():
     documents = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=100)
     docs = text_splitter.split_documents(documents)
-    print("DOCS", docs)
-    return docs
 
 # Pinecone credentials
 os.environ["PINECONE_API_KEY"] = "bb1c3c9c-55e5-4685-8d85-a2f646bf4d63"
