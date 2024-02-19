@@ -99,6 +99,16 @@ llm = Bedrock(
 bedrock_embeddings = BedrockEmbeddings(client=bedrock_runtime)
 
 # Initialize Pinecone for document search
+# doc_texts = [t.page_content for t in docs]
+# with concurrent.futures.ThreadPoolExecutor() as executor:
+#     print("Initializing Pinecone for document search")
+#     docsearch_future = executor.submit(PineconeLang.from_texts, doc_texts, bedrock_embeddings, index_name=index_name)
+#     chain_future = executor.submit(load_qa_chain, llm, chain_type="stuff")
+
+# docsearch = docsearch_future.result()
+# chain = chain_future.result()
+
+# Initialize Pinecone for document search
 doc_texts = [t.page_content for t in docs]
 with concurrent.futures.ThreadPoolExecutor() as executor:
     print("Initializing Pinecone for document search")
