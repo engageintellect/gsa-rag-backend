@@ -21,6 +21,7 @@ def initialize_bedrock_client():
     response = sts_client.assume_role(RoleArn=role_arn, RoleSessionName=session_name)
 
     credentials = response['Credentials']
+    print("Initializing Bedrock client")
     return boto3.Session(
         aws_access_key_id=credentials['AccessKeyId'],
         aws_secret_access_key=credentials['SecretAccessKey'],
@@ -39,6 +40,7 @@ def load_documents(document_path):
         print("No documents loaded!")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=100)
     docs = text_splitter.split_documents(documents)
+    print("Documents loading complete!")
     return docs
 
 
@@ -46,19 +48,24 @@ def load_documents(document_path):
 os.environ["PINECONE_API_KEY"] = "7f2bbe68-ec0e-4e28-9575-b5da2c4ffdc3"
 os.environ["PINECONE_API_ENV"] = "gcp-starter"
 index_name = "gsasubset"
+print("Pinecone credentials initialized")
 
 # Initialize Pinecone
 pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
+print("Pinecone initialized")
 
 # Initialize Bedrock client
 bedrock_runtime = initialize_bedrock_client()
+print("Bedrock client initialized")
 
 # Initialize Pinecone index
 if index_name in pc.list_indexes().names():
+    print("Deleting Pinecone index")
     pc.delete_index(name=index_name)
 
 # Create an index if not already there
 if index_name not in pc.list_indexes().names():
+    print("Creating Pinecone index")
     pc.create_index(
         name=index_name,
         dimension=1536,
@@ -105,7 +112,7 @@ query = "You are an AI assistant.  How can GSA help me in selecting the right MF
 
 # Search for similar documents
 docs = docsearch.similarity_search(query, k=80)
-print("DOCS", docs)
+# print("DOCS", docs)
 
 # Run QA chain
 output = chain.run(input_documents=docs, question=query)
