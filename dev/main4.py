@@ -109,14 +109,24 @@ bedrock_embeddings = BedrockEmbeddings(client=bedrock_runtime)
 # chain = chain_future.result()
 
 # Initialize Pinecone for document search
+# Initialize Pinecone for document search
 doc_texts = [t.page_content for t in docs]
+batch_size = 100  # Adjust batch size as needed
+num_batches = (len(doc_texts) + batch_size - 1) // batch_size
+
 with concurrent.futures.ThreadPoolExecutor() as executor:
     print("Initializing Pinecone for document search")
-    docsearch_future = executor.submit(PineconeLang.from_texts, doc_texts, bedrock_embeddings, index_name=index_name)
+    futures = []
+    for i in range(num_batches):
+        batch_texts = doc_texts[i * batch_size : (i + 1) * batch_size]
+        futures.append(executor.submit(PineconeLang.from_texts, batch_texts, bedrock_embeddings, index_name=index_name))
+    docsearch_futures = [future.result() for future in tqdm(concurrent.futures.as_completed(futures), total=num_batches)]
+
     chain_future = executor.submit(load_qa_chain, llm, chain_type="stuff")
 
-docsearch = docsearch_future.result()
+docsearch = PineconeLang.merge(*docsearch_futures)
 chain = chain_future.result()
+
 
 # Example query
 # query = "You are an AI assistant. I am planning to implement a zero trust architecture. Can you provide implementation guidance? Who can I contact in GSA? Use provided context only."
