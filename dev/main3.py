@@ -14,7 +14,7 @@ from tqdm.autonotebook import tqdm
 def initialize_bedrock_client():
     role_arn = 'arn:aws:iam::992382738258:role/gsa-rag'
     session_name = 'AssumedRoleSession'
-    region_name = 'us-west-2'
+    region_name = 'us-east-1'
     sts_client = boto3.client('sts', region_name=region_name)
 
     response = sts_client.assume_role(RoleArn=role_arn, RoleSessionName=session_name)
@@ -25,7 +25,7 @@ def initialize_bedrock_client():
         aws_secret_access_key=credentials['SecretAccessKey'],
         aws_session_token=credentials['SessionToken'],
         region_name=region_name
-    ).client(service_name="bedrock-runtime", region_name="us-west-2")
+    ).client(service_name="bedrock-runtime", region_name="us-east-1")
 
 
 def load_documents():
