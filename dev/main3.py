@@ -36,7 +36,7 @@ def load_documents():
     return docs  # Add return statement
 
 # Pinecone credentials
-os.environ["PINECONE_API_KEY"] = "bb1c3c9c-55e5-4685-8d85-a2f646bf4d63"
+os.environ["PINECONE_API_KEY"] = "7f2bbe68-ec0e-4e28-9575-b5da2c4ffdc3"
 os.environ["PINECONE_API_ENV"] = "gcp-starter"
 index_name = "gsasubset"
 
