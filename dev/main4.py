@@ -75,6 +75,7 @@ if index_name not in pc.list_indexes().names():
 
 # Wait for index to finish initialization
 while not pc.describe_index(index_name).status["ready"]:
+    print("Waiting for Pinecone index to finish initialization")
     time.sleep(1)
 
 # Model ID for Bedrock
@@ -100,6 +101,7 @@ bedrock_embeddings = BedrockEmbeddings(client=bedrock_runtime)
 # Initialize Pinecone for document search
 doc_texts = [t.page_content for t in docs]
 with concurrent.futures.ThreadPoolExecutor() as executor:
+    print("Initializing Pinecone for document search")
     docsearch_future = executor.submit(PineconeLang.from_texts, doc_texts, bedrock_embeddings, index_name=index_name)
     chain_future = executor.submit(load_qa_chain, llm, chain_type="stuff")
 
@@ -109,6 +111,7 @@ chain = chain_future.result()
 # Example query
 # query = "You are an AI assistant. I am planning to implement a zero trust architecture. Can you provide implementation guidance? Who can I contact in GSA? Use provided context only."
 query = "You are an AI assistant.  How can GSA help me in selecting the right MFD? In particular, what does GSA recommend for picking the right maintainance plan?. Use provided context only."
+print("Query:", query)
 
 # Search for similar documents
 docs = docsearch.similarity_search(query, k=80)
