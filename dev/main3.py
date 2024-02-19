@@ -27,13 +27,20 @@ def initialize_bedrock_client():
         region_name=region_name
     ).client(service_name="bedrock-runtime", region_name="us-east-1")
 
+
 def load_documents():
     document_path = "/home/ubuntu/gsa-rag-backend/dev/GSA-buyers-guide/"
+    print(f"Loading documents from: {document_path}")
     loader = PyPDFDirectoryLoader(document_path)
     documents = loader.load()
+    if documents:
+        print(f"Number of documents loaded: {len(documents)}")
+    else:
+        print("No documents loaded!")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=100)
     docs = text_splitter.split_documents(documents)
-    return docs  # Add return statement
+    return docs
+
 
 # Pinecone credentials
 os.environ["PINECONE_API_KEY"] = "7f2bbe68-ec0e-4e28-9575-b5da2c4ffdc3"
