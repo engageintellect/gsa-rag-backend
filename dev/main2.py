@@ -1,3 +1,4 @@
+import boto3
 import os
 import time
 from langchain.document_loaders import PyPDFDirectoryLoader
