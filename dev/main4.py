@@ -117,18 +117,19 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
     print("Initializing Pinecone for document search")
     futures = []
     for i in range(num_batches):
-        batch_texts = doc_texts[i * batch_size : (i + 1) * batch_size]
+        batch_texts = doc_texts[i * batch_size: (i + 1) * batch_size]
         futures.append(executor.submit(PineconeLang.from_texts, batch_texts, bedrock_embeddings, index_name=index_name))
     docsearch_futures = [future.result() for future in tqdm(concurrent.futures.as_completed(futures), total=num_batches)]
 
     chain_future = executor.submit(load_qa_chain, llm, chain_type="stuff")
 
 # Combine results of document search futures
-docsearch = PineconeLang(docsearch_futures[0].data, index_name=index_name)
+docsearch = PineconeLang(docsearch_futures[0], index_name=index_name)
 for i in range(1, len(docsearch_futures)):
-    docsearch.add(docsearch_futures[i].data)
+    docsearch.extend(docsearch_futures[i])
 
 chain = chain_future.result()
+
 
 
 
