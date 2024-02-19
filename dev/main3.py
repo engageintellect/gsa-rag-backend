@@ -103,7 +103,8 @@ chain = load_qa_chain(llm, chain_type="stuff")
 query = "You are an AI assistant. I am planning to implement a zero trust architecture. Can you provide implementation guidance? Who can I contact in GSA? Use provided context only."
 
 # Search for similar documents
-docs = docsearch.similarity_search(query, k=40)
+docs = docsearch.similarity_search(query, k=80)
+print("DOCS", docs)
 
 # Run QA chain
 output = chain.run(input_documents=docs, question=query)
