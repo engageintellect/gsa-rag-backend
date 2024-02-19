@@ -28,7 +28,7 @@ def initialize_bedrock_client():
     ).client(service_name="bedrock-runtime", region_name="us-east-1")
 
 def load_documents():
-    document_path = "/home/ubuntu/gsa-rag-backend/dev/GSA-buyers-guide"
+    document_path = "/home/ubuntu/gsa-rag-backend/dev/GSA-buyers-guide/"
     loader = PyPDFDirectoryLoader(document_path)
     documents = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=100)
