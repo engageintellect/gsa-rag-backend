@@ -21,7 +21,7 @@ def initialize_bedrock_client():
     response = sts_client.assume_role(RoleArn=role_arn, RoleSessionName=session_name)
 
     credentials = response['Credentials']
-    print("Initializing Bedrock client")
+    print("Initializing Bedrock client...")
     return boto3.Session(
         aws_access_key_id=credentials['AccessKeyId'],
         aws_secret_access_key=credentials['SecretAccessKey'],
@@ -31,7 +31,7 @@ def initialize_bedrock_client():
 
 
 def load_documents(document_path):
-    print(f"Loading documents from: {document_path}")
+    print(f"Loading documents from: {document_path}...")
     loader = PyPDFDirectoryLoader(document_path)
     documents = loader.load()
     if documents:
@@ -52,11 +52,11 @@ print("Pinecone credentials initialized")
 
 # Initialize Pinecone
 pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
-print("Pinecone initialized")
+print("Pinecone initialized ✅")
 
 # Initialize Bedrock client
 bedrock_runtime = initialize_bedrock_client()
-print("Bedrock client initialized")
+print("Bedrock client initialized ✅")
 
 # Initialize Pinecone index
 # if index_name in pc.list_indexes().names():
@@ -122,7 +122,7 @@ def similarity_search():
     docs = docsearch.similarity_search(query, k=80)
     # print("DOCS", docs)
     # Run QA chain
-    output = chain.invoke(input_documents=docs, question=query)
+    output = chain.run(input_documents=docs, question=query)
     print("Output:", output)
 
 
