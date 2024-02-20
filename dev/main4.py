@@ -149,6 +149,17 @@ def similarity_search():
 
 @app.get("/hello")
 async def read_root():
-		return {"message": "Hello, from Resonant Logic!"}
+		return {"message": "Hello, from GSA-RL-RAG"}
 
-similarity_search()
+@app.post("/generate_answer/")
+
+async def generate_answer(question: Question):
+      try:
+              similarity_search()
+      except Exception as e:
+              return {"error": "An error occurred while generating answer. Please try again later."}
+							# raise HTTPException(status_code=500, detail=str(e))
+
+
+      
+
