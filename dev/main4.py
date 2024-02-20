@@ -40,7 +40,7 @@ def load_documents(document_path):
         print("No documents loaded!")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=100)
     docs = text_splitter.split_documents(documents)
-    print("Documents loading complete ✅")
+    print("✅ Documents loading complete ✅")
     return docs
 
 
@@ -52,11 +52,12 @@ print("Pinecone credentials initialized")
 
 # Initialize Pinecone
 pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
-print("Pinecone initialized ✅")
+print("✅ Pinecone initialized ✅")
 
 # Initialize Bedrock client
 bedrock_runtime = initialize_bedrock_client()
-print("Bedrock client initialized ✅")
+print("✅ Bedrock client initialized ✅")
+
 
 # Initialize Pinecone index
 # if index_name in pc.list_indexes().names():
