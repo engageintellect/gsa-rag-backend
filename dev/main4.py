@@ -152,7 +152,7 @@ async def read_root():
 		return {"message": "Hello, from GSA-RL-RAG"}
 
 @app.post("/generate_answer/")
-async def generate_answer(question: Question):
+async def generate_answer():
       try:
               similarity_search()
       except Exception as e:
