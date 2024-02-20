@@ -1,3 +1,6 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 import boto3
 import os
 import time
@@ -10,6 +13,21 @@ from langchain_community.vectorstores import Pinecone as PineconeLang
 from langchain.chains.question_answering import load_qa_chain
 from pinecone import Pinecone, PodSpec
 from tqdm.autonotebook import tqdm
+
+app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+		CORSMiddleware,
+		allow_origins=["*"],  # Set this to the appropriate origins if needed
+		allow_credentials=True,
+		allow_methods=["GET", "POST"],
+		allow_headers=["*"],
+	)
+
+class Question(BaseModel):
+		user_question: str
+
 
 # Initialize Bedrock client globally
 def initialize_bedrock_client():
@@ -66,7 +84,7 @@ print("✅ Bedrock client initialized ✅")
 
 # Create an index if not already there
 if index_name not in pc.list_indexes().names():
-    print("Creating Pinecone index")
+    print("Creating Pinecone index...")
     pc.create_index(
         name=index_name,
         dimension=1536,
@@ -102,7 +120,7 @@ bedrock_embeddings = BedrockEmbeddings(client=bedrock_runtime)
 # Initialize Pinecone for document search
 doc_texts = [t.page_content for t in docs]
 with concurrent.futures.ThreadPoolExecutor() as executor:
-    print("Initializing Pinecone for document search")
+    print("Initializing Pinecone for document search...")
     docsearch_future = executor.submit(PineconeLang.from_texts, doc_texts, bedrock_embeddings, index_name=index_name)
     chain_future = executor.submit(load_qa_chain, llm, chain_type="stuff")
 
@@ -127,5 +145,9 @@ def similarity_search():
     print("Output:", output)
 
 
+
+@app.get("/hello")
+async def read_root():
+		return {"message": "Hello, from Resonant Logic!"}
 
 similarity_search()
