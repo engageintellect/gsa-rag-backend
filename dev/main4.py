@@ -123,7 +123,7 @@ def similarity_search():
 	# print("DOCS", docs)
 
 	# Run QA chain
-  output = chain.invoke(input_documents=docs, question=query)
+  output = chain.invoke(input=docs, question=query)
   print("Output:", output)
 
 
