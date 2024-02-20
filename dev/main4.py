@@ -144,6 +144,7 @@ def similarity_search(user_input):
     # Run QA chain
     output = chain.run(input_documents=docs, question=query)
     print("Output:", output)
+    return output
 
 
 
