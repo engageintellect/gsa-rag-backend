@@ -40,7 +40,7 @@ def load_documents(document_path):
         print("No documents loaded!")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=100)
     docs = text_splitter.split_documents(documents)
-    print("Documents loading complete!")
+    print("Documents loading complete ✅")
     return docs
 
 
@@ -123,7 +123,7 @@ def similarity_search():
 	# print("DOCS", docs)
 
 	# Run QA chain
-  output = chain.run(input_documents=docs, question=query)
+  output = chain.invoke(input_documents=docs, question=query)
   print("Output:", output)
 
 
