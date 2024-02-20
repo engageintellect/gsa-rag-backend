@@ -134,31 +134,26 @@ chain = chain_future.result()
 # query = "You are an AI assistant. I am planning to implement a zero trust architecture. Can you provide implementation guidance? Who can I contact in GSA? Use provided context only."
 user_query = "How can GSA help me in selecting the right MFD? In particular, what does GSA recommend for picking the right maintainance plan?"
 
-def similarity_search(user_input):
-    query = "You are an AI assistant. {user_input}. Use provided context only."
-    print("Query:", query)
-    print("Searching for similar documents")
-    # Search for similar documents
-    docs = docsearch.similarity_search(query, k=80)
-    # print("DOCS", docs)
-    # Run QA chain
-    output = chain.run(input_documents=docs, question=query)
-    print("Output:", output)
-    return output
-
-
 
 @app.get("/hello")
 async def read_root():
-		return {"message": "Hello, from GSA-RL-RAG"}
+      return {"message": "Hello, from GSA-RL-RAG"}
 
 @app.post("/generate_answer/")
-async def generate_answer():
+async def generate_answer(question: Question):
       try:
-              similarity_search(user_query)
+        query = "You are an AI assistant. {question.user_question}. Use provided context only."
+        print("Query:", query)
+        print("Searching for similar documents")
+        # Search for similar documents
+        docs = docsearch.similarity_search(query, k=80)
+        # print("DOCS", docs)
+        # Run QA chain
+        output = chain.run(input_documents=docs, question=query)
+        print("Output:", output)
+        return output
       except Exception as e:
-              return {"error": "An error occurred while generating answer. Please try again later."}
-							# raise HTTPException(status_code=500, detail=str(e))
+           return {"error": "An error occurred while generating answer. Please try again later."}
 
 
       
