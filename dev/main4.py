@@ -137,7 +137,7 @@ user_query = "How can GSA help me in selecting the right MFD? In particular, wha
 
 @app.get("/hello")
 async def read_root():
-      return {"message": "Hello, from GSA-RL-RAG"}
+      return {"message": "Hello, from GSA-RL-RAG V2"}
 
 @app.post("/generate_answer/")
 async def generate_answer(question: Question):
