@@ -17,7 +17,7 @@ from pinecone import Pinecone, PodSpec
 from tqdm.autonotebook import tqdm
 
 # Constants
-PINECONE_API_KEY = "7f2bbe68-ec0e-4e28-9575-b5da2c4ffdc3"
+PINECONE_API_KEY = os.environ["PINECONE_API_KEY"]
 PINECONE_API_ENV = "gcp-starter"
 INDEX_NAME = "gsasubset"
 MODEL_ID = 'anthropic.claude-v2:1'
