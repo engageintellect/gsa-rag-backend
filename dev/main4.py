@@ -35,12 +35,12 @@ def load_documents(document_path):
     loader = PyPDFDirectoryLoader(document_path)
     documents = loader.load()
     if documents:
+        print("✅ Documents loading complete ✅")
         print(f"Number of documents loaded: {len(documents)}")
     else:
         print("No documents loaded!")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=100)
     docs = text_splitter.split_documents(documents)
-    print("✅ Documents loading complete ✅")
     return docs
 
 
