@@ -142,7 +142,8 @@ async def read_root():
 @app.post("/generate_answer/")
 async def generate_answer(question: Question):
     try:
-        query = "You are an AI assistant. {question.user_question}. Use provided context only."
+        user_question = question.user_question
+        query = f"You are an AI assistant. {user_question}. Use provided context only."
         print("Query:", query)
         print("Searching for similar documents")
         # Search for similar documents
