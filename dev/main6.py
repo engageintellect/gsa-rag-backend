@@ -123,5 +123,5 @@ async def generate_answer(question: Question):
 
 # Run the FastAPI app using uvicorn when the script is executed directly
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, log_config=logging_config)
+    uvicorn.run("main6:app", host="0.0.0.0", port=8000, log_config=logging_config)
 
