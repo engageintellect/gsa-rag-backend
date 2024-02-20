@@ -132,10 +132,10 @@ chain = chain_future.result()
 
 # Example query
 # query = "You are an AI assistant. I am planning to implement a zero trust architecture. Can you provide implementation guidance? Who can I contact in GSA? Use provided context only."
+user_query = "How can GSA help me in selecting the right MFD? In particular, what does GSA recommend for picking the right maintainance plan?"
 
-
-def similarity_search():
-    query = "You are an AI assistant.  How can GSA help me in selecting the right MFD? In particular, what does GSA recommend for picking the right maintainance plan?. Use provided context only."
+def similarity_search(user_input):
+    query = "You are an AI assistant. {user_input}. Use provided context only."
     print("Query:", query)
     print("Searching for similar documents")
     # Search for similar documents
@@ -154,7 +154,7 @@ async def read_root():
 @app.post("/generate_answer/")
 async def generate_answer():
       try:
-              similarity_search()
+              similarity_search(user_query)
       except Exception as e:
               return {"error": "An error occurred while generating answer. Please try again later."}
 							# raise HTTPException(status_code=500, detail=str(e))
