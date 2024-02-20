@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
 import boto3
 import os
 import time
@@ -146,9 +145,11 @@ async def generate_answer(question: Question):
         query = f"You are an AI assistant. {user_question}. Use provided context only."
         print("Query:", query)
         print("Searching for similar documents")
+        
         # Search for similar documents
         docs = docsearch.similarity_search(query, k=80)
         # print("DOCS", docs)
+        
         # Run QA chain
         output = chain.run(input_documents=docs, question=query)
         print("Output:", output)
