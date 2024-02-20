@@ -109,15 +109,23 @@ docsearch = docsearch_future.result()
 chain = chain_future.result()
 
 
+
 # Example query
 # query = "You are an AI assistant. I am planning to implement a zero trust architecture. Can you provide implementation guidance? Who can I contact in GSA? Use provided context only."
 query = "You are an AI assistant.  How can GSA help me in selecting the right MFD? In particular, what does GSA recommend for picking the right maintainance plan?. Use provided context only."
 print("Query:", query)
 
-# Search for similar documents
-docs = docsearch.similarity_search(query, k=80)
-# print("DOCS", docs)
 
-# Run QA chain
-output = chain.run(input_documents=docs, question=query)
-print(output)
+def similarity_search():
+  print("Searching for similar documents")
+	# Search for similar documents
+  docs = docsearch.similarity_search(query, k=80)
+	# print("DOCS", docs)
+
+	# Run QA chain
+  output = chain.run(input_documents=docs, question=query)
+  print("Output:", output)
+
+
+
+similarity_search()
