@@ -90,11 +90,13 @@ document_path = "/home/ubuntu/gsa-rag-backend/dev/GSA-buyers-guide/"
 with concurrent.futures.ThreadPoolExecutor() as executor:
     doc_texts = [t.page_content for t in load_documents(document_path)]
     print("Initializing Pinecone for document search...")
-    docsearch_future = executor.submit(PineconeLang.from_texts, doc_texts, bedrock_embeddings, index_name=index_name)
+    docsearch_future = executor.submit(PineconeLang.from_texts, doc_texts, BedrockEmbeddings, index_name=index_name)
     chain_future = executor.submit(load_qa_chain, llm, chain_type="stuff")
 
 docsearch = docsearch_future.result()
 chain = chain_future.result()
+
+
 
 # Example query
 @app.get("/hello")
