@@ -60,6 +60,7 @@ def load_documents(document_path):
         print("No documents loaded!")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=100)
     docs = text_splitter.split_documents(documents)
+    print(docs)
     return docs
 
 
