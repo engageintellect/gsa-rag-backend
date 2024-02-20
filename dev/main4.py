@@ -122,7 +122,7 @@ def similarity_search():
     docs = docsearch.similarity_search(query, k=80)
     # print("DOCS", docs)
     # Run QA chain
-    output = chain.invoke(input=docs, question=query)
+    output = chain.invoke(input_documents=docs, question=query)
     print("Output:", output)
 
 
