@@ -65,13 +65,12 @@ def load_documents(document_path):
 
 
 # Pinecone credentials
-os.environ["PINECONE_API_KEY"] = "7f2bbe68-ec0e-4e28-9575-b5da2c4ffdc3"
 os.environ["PINECONE_API_ENV"] = "gcp-starter"
 index_name = "gsasubset"
 print("Pinecone credentials initialized")
 
 # Initialize Pinecone
-pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
 print("Pinecone initialized ✅")
 
 # Initialize Bedrock client
@@ -146,7 +145,7 @@ async def generate_answer(question: Question):
         user_question = question.user_question
         query = f"You are an AI assistant. {user_question}. Use provided context only."
         print("Query:", query)
-        print("Searching for similar documents")
+        print("Searching for similar documents...")
         
         # Search for similar documents
         docs = docsearch.similarity_search(query, k=80)
