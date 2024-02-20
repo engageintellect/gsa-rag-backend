@@ -21,7 +21,7 @@ def initialize_bedrock_client():
     response = sts_client.assume_role(RoleArn=role_arn, RoleSessionName=session_name)
 
     credentials = response['Credentials']
-    print("Initializing Bedrock client")
+    print("\nInitializing Bedrock client\n")
     return boto3.Session(
         aws_access_key_id=credentials['AccessKeyId'],
         aws_secret_access_key=credentials['SecretAccessKey'],
@@ -31,32 +31,32 @@ def initialize_bedrock_client():
 
 
 def load_documents(document_path):
-    print(f"Loading documents from: {document_path}")
+    print(f"\nLoading documents from: {document_path}\n")
     loader = PyPDFDirectoryLoader(document_path)
     documents = loader.load()
     if documents:
-        print(f"Number of documents loaded: {len(documents)}")
+        print(f"\nNumber of documents loaded: {len(documents)}\n")
     else:
-        print("No documents loaded!")
+        print("\nNo documents loaded!\n")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=100)
     docs = text_splitter.split_documents(documents)
-    print("Documents loading complete ✅")
+    print("\nDocuments loading complete ✅\n")
     return docs
 
 
 # Pinecone credentials
-os.environ["PINECONE_API_KEY"] = "7f2bbe68-ec0e-4e28-9575-b5da2c4ffdc3"
+# os.environ["PINECONE_API_KEY"] = "7f2bbe68-ec0e-4e28-9575-b5da2c4ffdc3"
 os.environ["PINECONE_API_ENV"] = "gcp-starter"
 index_name = "gsasubset"
-print("Pinecone credentials initialized")
+print("\nPinecone credentials initialized\n")
 
 # Initialize Pinecone
 pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
-print("Pinecone initialized")
+print("\nPinecone initialized\n")
 
 # Initialize Bedrock client
 bedrock_runtime = initialize_bedrock_client()
-print("Bedrock client initialized")
+print("\nBedrock client initialized\n")
 
 # Initialize Pinecone index
 # if index_name in pc.list_indexes().names():
@@ -65,7 +65,7 @@ print("Bedrock client initialized")
 
 # Create an index if not already there
 if index_name not in pc.list_indexes().names():
-    print("Creating Pinecone index")
+    print("\nCreating Pinecone index\n")
     pc.create_index(
         name=index_name,
         dimension=1536,
@@ -75,7 +75,7 @@ if index_name not in pc.list_indexes().names():
 
 # Wait for index to finish initialization
 while not pc.describe_index(index_name).status["ready"]:
-    print("Waiting for Pinecone index to finish initialization")
+    print("\nWaiting for Pinecone index to finish initialization\n")
     time.sleep(1)
 
 # Model ID for Bedrock
@@ -101,12 +101,13 @@ bedrock_embeddings = BedrockEmbeddings(client=bedrock_runtime)
 # Initialize Pinecone for document search
 doc_texts = [t.page_content for t in docs]
 with concurrent.futures.ThreadPoolExecutor() as executor:
-    print("Initializing Pinecone for document search")
+    print("\nInitializing Pinecone for document search...\n")
     docsearch_future = executor.submit(PineconeLang.from_texts, doc_texts, bedrock_embeddings, index_name=index_name)
     chain_future = executor.submit(load_qa_chain, llm, chain_type="stuff")
 
 docsearch = docsearch_future.result()
 chain = chain_future.result()
+print("\nPinecone initialized for document search ✅\n")
 
 
 
@@ -116,14 +117,14 @@ chain = chain_future.result()
 
 def similarity_search():
     query = "You are an AI assistant.  How can GSA help me in selecting the right MFD? In particular, what does GSA recommend for picking the right maintainance plan?. Use provided context only."
-    print("Query:", query)
-    print("Searching for similar documents...")
+    print("\nQuery:", query)
+    print("\nSearching for similar documents...\n")
     # Search for similar documents
     docs = docsearch.similarity_search(query, k=80)
     # print("DOCS", docs)
     # Run QA chain
     output = chain.run(input_documents=docs, question=query)
-    print("Response:", output)
+    print("\nResponse:\n", output)
 
 
 
