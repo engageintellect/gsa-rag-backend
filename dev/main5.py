@@ -60,7 +60,7 @@ def load_documents(document_path):
         print("No documents loaded!")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=100)
     docs = text_splitter.split_documents(documents)
-    print(docs)
+    # print(docs)
     return docs
 
 
@@ -79,20 +79,20 @@ bedrock_runtime = initialize_bedrock_client()
 print("Bedrock client initialized ✅")
 
 
-# # Initialize Pinecone index
-# if index_name in pc.list_indexes().names():
-#     print("Deleting Pinecone index")
-#     pc.delete_index(name=index_name)
+# Initialize Pinecone index
+if index_name in pc.list_indexes().names():
+    print("Deleting Pinecone index")
+    pc.delete_index(name=index_name)
 
-# # Create an index if not already there
-# if index_name not in pc.list_indexes().names():
-#     print("Creating Pinecone index...")
-#     pc.create_index(
-#         name=index_name,
-#         dimension=1536,
-#         metric='dotproduct',
-#         spec=PodSpec(environment='gcp-starter')
-#     )
+# Create an index if not already there
+if index_name not in pc.list_indexes().names():
+    print("Creating Pinecone index...")
+    pc.create_index(
+        name=index_name,
+        dimension=1536,
+        metric='dotproduct',
+        spec=PodSpec(environment='gcp-starter')
+    )
 
 # Wait for index to finish initialization
 while not pc.describe_index(index_name).status["ready"]:
