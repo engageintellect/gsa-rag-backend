@@ -19,15 +19,15 @@ app = FastAPI()
 
 # Add CORS middleware
 app.add_middleware(
-		CORSMiddleware,
-		allow_origins=["*"],  # Set this to the appropriate origins if needed
-		allow_credentials=True,
-		allow_methods=["GET", "POST"],
-		allow_headers=["*"],
-	)
+    CORSMiddleware,
+    allow_origins=["*"],  # Set this to the appropriate origins if needed
+    allow_credentials=True,
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+    )
 
 class Question(BaseModel):
-		user_question: str
+    user_question: str
 
 
 # Initialize Bedrock client globally
@@ -54,7 +54,7 @@ def load_documents(document_path):
     loader = PyPDFDirectoryLoader(document_path)
     documents = loader.load()
     if documents:
-        print("✅ Documents loading complete ✅")
+        print("Documents loading complete ✅")
         print(f"Number of documents loaded: {len(documents)}")
     else:
         print("No documents loaded!")
@@ -71,11 +71,11 @@ print("Pinecone credentials initialized")
 
 # Initialize Pinecone
 pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
-print("✅ Pinecone initialized ✅")
+print("Pinecone initialized ✅")
 
 # Initialize Bedrock client
 bedrock_runtime = initialize_bedrock_client()
-print("✅ Bedrock client initialized ✅")
+print("Bedrock client initialized ✅")
 
 
 # Initialize Pinecone index
@@ -141,7 +141,7 @@ async def read_root():
 
 @app.post("/generate_answer/")
 async def generate_answer(question: Question):
-      try:
+    try:
         query = "You are an AI assistant. {question.user_question}. Use provided context only."
         print("Query:", query)
         print("Searching for similar documents")
@@ -152,8 +152,8 @@ async def generate_answer(question: Question):
         output = chain.run(input_documents=docs, question=query)
         print("Output:", output)
         return output
-      except Exception as e:
-           return {"error": "An error occurred while generating answer. Please try again later."}
+    except Exception as e:
+        return {"error": "An error occurred while generating answer. Please try again later."}
 
 
       
