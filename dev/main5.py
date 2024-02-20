@@ -152,11 +152,11 @@ async def generate_answer(question: Question):
         # print("DOCS", docs)
         
         # Run QA chain
-        output = chain.run(input_documents=docs, question=query)
+        output = await chain.run(input_documents=docs, question=query)
         print("Output:", output)
         return output
     except Exception as e:
-        return {"error": "An error occurred while generating answer. Please try again later."}
+        return {"error": "An error occurred while generating answer. API may be down. Please try again later."}
 
 
 # Run the FastAPI app using uvicorn when the script is executed directly
